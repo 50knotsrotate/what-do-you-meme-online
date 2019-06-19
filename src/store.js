@@ -1,16 +1,8 @@
 import { createStore } from 'redux';
 
-const initialState = {
-    pin: null,
-    players: [],
-    cards: [],
-    chosenCards: [],
-    game_ended: false
-}
-
 export const CREATE_GAME = 'CREATE_GAME';
 
-const reducer = (state = initialState, action) => {
+const reducer = (state = {}, action) => { //Game will be created on the back end
     const { type, payload } = action;
 
     switch (type) { 
@@ -20,3 +12,5 @@ const reducer = (state = initialState, action) => {
             return state
     }
 };
+
+export default createStore(reducer);

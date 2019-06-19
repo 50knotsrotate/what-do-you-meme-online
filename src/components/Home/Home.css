@@ -1,0 +1,13 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.home-wrapper {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 100, 150, .5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
