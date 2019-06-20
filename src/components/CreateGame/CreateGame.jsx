@@ -39,8 +39,6 @@ export default class CreateGame extends Component {
       username,
       avatar
     }).then(res => {
-        console.log('store from create game below');
-        console.log(res.data)
       store.dispatch({
         type: CREATE_GAME,
         payload: res.data

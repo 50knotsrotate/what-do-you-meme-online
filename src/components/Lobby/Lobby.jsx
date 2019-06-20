@@ -20,31 +20,46 @@ export default class Lobby extends Component {
       const game = reduxState.payload;
       this.setState({
         pin: game.pin,
-        users: game.users,
+        users: game.users
+      });
+
+      this.setState({
         current_user: this.state.users[this.state.users.length - 1]
       });
+
       socket.emit("socket join", {
         pin: game.pin,
-        user: this.state.users[this.state.users.length - 1]
+        current_user: this.state.users[this.state.users.length - 1]
+      });
+    });
+
+    socket.on("new user", data => {
+      this.setState({
+        users: data
       });
     });
       
-      socket.on("new user", data => {
-        this.setState({
-            users: [...this.state.users, data]//.filter((user, index) => this.state.users.indexOf(user) == index)
-        })
-    });
-  };
+      socket.on('start game', () => { 
+          this.props.history.push('/play');
+      })
+    };
+    
+    startGame = () => { 
+        socket.emit('start', {pin: this.state.pin})
+    }
   render() {
     const game_pin = this.state.pin || "Setting up lobby...";
     const users = this.state.users.map(user => {
       return <h1>{user.username}</h1>;
     });
     return (
-      <div>
-        <h1>GAME PIN: {game_pin}</h1>
-        {users}
-      </div>
+      this.state.current_user && (
+        <div>
+          <h1>GAME PIN: {game_pin}</h1>
+          {users}
+                {this.state.current_user.is_judge && <button onClick={this.startGame}>Start</button>}
+        </div>
+      )
     );
   }
 }

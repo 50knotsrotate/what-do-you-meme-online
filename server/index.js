@@ -14,9 +14,9 @@ io.on("connection", socket => {
 
   socket.on("socket join", data => {
     const { user, pin } = data;
-    // const game = allGames.filter(game => game.pin == pin)[0];
+     const game = allGames.filter(game => game.pin == pin)[0];
     socket.join(pin);
-    io.in(pin).emit("new user", user);
+    io.in(pin).emit("new user", game.users);
   });
 
   socket.on("add player", data => {
@@ -33,6 +33,10 @@ io.on("connection", socket => {
   socket.on("disconnect", socket => {
     console.log("A user has left");
   });
+
+  socket.on('start', ({ pin }) => {
+    io.in(pin).emit('start game');
+   })
 });
 
 app.post("/game", (req, res) => {

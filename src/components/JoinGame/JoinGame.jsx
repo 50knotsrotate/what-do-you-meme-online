@@ -39,8 +39,6 @@ export default class JoinGame extends Component {
 
     socket.emit("add player", { username, avatar, pin });
       Axios.get(`/game?pin=${pin}`).then(res => {
-          console.log('store from join game below');
-        console.log(res.data)
       store.dispatch({
         type: UPDATE_GAME,
         payload: res.data
