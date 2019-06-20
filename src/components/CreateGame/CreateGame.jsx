@@ -55,8 +55,8 @@ export default class CreateGame extends Component {
 
     render() {
     return (
-      <div className="create-wrapper">
-        <h1>Game pin: {this.state.game_pin}</h1>
+        <div className="create-wrapper">
+            <h1>Choose your username</h1>
         <input
           onChange={e => this.handleUsername(e.target.value)}
           value={this.state.username}

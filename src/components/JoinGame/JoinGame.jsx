@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Avatars from "../Avatars/Avatars";
 import Axios from "axios";
+import "./JoinGame.css";
 import store, { UPDATE_GAME } from "../../store";
 import socketIOClient from "socket.io-client";
 const socket = socketIOClient("http://localhost:4000");
@@ -38,13 +39,13 @@ export default class JoinGame extends Component {
     const { username, avatar, pin } = this.state;
 
     socket.emit("add player", { username, avatar, pin });
-      Axios.get(`/game?pin=${pin}`).then(res => {
+    Axios.get(`/game?pin=${pin}`).then(res => {
       store.dispatch({
         type: UPDATE_GAME,
         payload: res.data
       });
-      });
-      this.props.history.push("/lobby");
+    });
+    this.props.history.push("/lobby");
   };
 
   handleUsername = username => {
@@ -58,15 +59,17 @@ export default class JoinGame extends Component {
       <div>
         <h1>Join Game</h1>
         <h2>Enter pin</h2>
-        <input
-          onChange={e => this.handlePin(e.target.value)}
-          value={this.state.pin}
-        />
-        <input
-          onChange={e => this.handleUsername(e.target.value)}
-          value={this.state.username}
-          placeholder="Username"
-        />
+        <div>
+          <input
+            onChange={e => this.handlePin(e.target.value)}
+            value={this.state.pin}
+          />
+          <input
+            onChange={e => this.handleUsername(e.target.value)}
+            value={this.state.username}
+            placeholder="Username"
+          />
+        </div>
         <h1>Select avatar</h1>
         <Avatars
           selected={this.state.avatar}

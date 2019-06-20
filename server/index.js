@@ -4,6 +4,7 @@ const server = require("http").Server(app);
 var io = require("socket.io")(server);
 const path = require("path");
 const { Player } = require("./gameObjects/Player");
+const { cards } = require('./gameObjects/cards');
 
 app.use(express.json());
 
@@ -14,7 +15,7 @@ io.on("connection", socket => {
 
   socket.on("socket join", data => {
     const { user, pin } = data;
-     const game = allGames.filter(game => game.pin == pin)[0];
+    const game = allGames.filter(game => game.pin == pin)[0];
     socket.join(pin);
     io.in(pin).emit("new user", game.users);
   });
@@ -25,18 +26,18 @@ io.on("connection", socket => {
     if (game) {
       const player = new Player(username, avatar, false);
       game.users.push(player);
-    } else { 
-      socket.emit('error');
+    } else {
+      socket.emit("error"); //TODO: proper error handling
     }
-   })
+  });
 
   socket.on("disconnect", socket => {
     console.log("A user has left");
   });
 
-  socket.on('start', ({ pin }) => {
-    io.in(pin).emit('start game');
-   })
+  socket.on("start", ({ pin }) => {
+    io.in(pin).emit("start game");
+  });
 });
 
 app.post("/game", (req, res) => {
@@ -50,7 +51,7 @@ app.post("/game", (req, res) => {
   }
   const newGame = {
     users: [player],
-    cards: [],
+    cards: [...cards],
     chosenCards: [],
     game_finished: false,
     pin
@@ -61,7 +62,7 @@ app.post("/game", (req, res) => {
 
 app.get("/game", (req, res) => {
   //All info needed to get a game, add a player, and return it
-  const { pin} = req.query;
+  const { pin } = req.query;
   const game = allGames.filter(game => game.pin == pin)[0];
 
   if (game) {

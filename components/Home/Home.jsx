@@ -7,12 +7,14 @@ export default function Home() {
     <div className="home-wrapper">
       <div className="home-main">
         <h1>Memes against humanity</h1>
-        <Link to="/create">
-          <button>Create Game</button>
-        </Link>
-        <Link to="/join">
-          <button>Join Game</button>
-        </Link>
+        <div className="buttons">
+          <Link to="/create">
+            <button className = 'button'>Create Game</button>
+          </Link>
+          <Link to="/join">
+            <button>Join Game</button>
+          </Link>
+        </div>
       </div>
     </div>
   );

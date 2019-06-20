@@ -6,8 +6,22 @@
 .home-wrapper {
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 100, 150, .5);
+    background-color: rgba(0, 100, 150, .9);
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.buttons {
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+.button {
+    border: 2px solid blue;
+    border-radius: 5px;
+    background-color: cyan;
+    font-size: 25px;
 }
