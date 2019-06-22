@@ -1,20 +1,27 @@
 const express = require("express");
 const app = express();
 const server = require("http").Server(app);
+const session = require("express-session");
 var io = require("socket.io")(server);
 const path = require("path");
 const { Player } = require("./gameObjects/Player");
-const { cards } = require('./gameObjects/cards');
+const { cards } = require("./gameObjects/cards");
+const { player_cards } = require("./gameObjects/player_cards");
+const { shuffle, distributeCards, getGif } = require("./helpers");
 
 app.use(express.json());
-
+app.use(
+  session({
+    secret: "shhh, its a secret!"
+  })
+);
 const allGames = [];
 
 io.on("connection", socket => {
   console.log("a user has connected");
 
   socket.on("socket join", data => {
-    const { user, pin } = data;
+    const { pin } = data;
     const game = allGames.filter(game => game.pin == pin)[0];
     socket.join(pin);
     io.in(pin).emit("new user", game.users);
@@ -26,9 +33,44 @@ io.on("connection", socket => {
     if (game) {
       const player = new Player(username, avatar, false);
       game.users.push(player);
+      socket.emit("new player", game);
     } else {
       socket.emit("error"); //TODO: proper error handling
     }
+  });
+
+  socket.on("create game", data => {
+    const { pin } = data;
+    const game = allGames.filter(game => game.pin == pin)[0];
+    socket.join(data.pin)
+
+    //Shuffle the cards
+    game.cards = [...shuffle(cards)];
+
+    //Putting into variable because const
+    var playerCards = [...shuffle(player_cards)];
+
+    // distribute cards
+    distributeCards(game, playerCards);
+    socket.emit("game created", { game });
+  });
+
+  socket.on("get gif", data => {
+    const { pin } = data;
+    const game = allGames.filter(game => game.pin == pin)[0];
+    console.log(game);
+    io.in(pin).emit("got gif", game.gif);
+    // socket.emit('got gif', game.gif)
+  });
+
+  socket.on("set gif", data => {
+    console.log('set gif called')
+    const { pin } = data;
+    console.log(io.sockets.adapter.rooms[pin].sockets);
+    const game = allGames.filter(game => game.pin == pin)[0];
+    game.gif = getGif(game, game.cards);
+    socket.emit('got gif', game.gif)
+      socket.to(pin).emit("got gif", game.gif);
   });
 
   socket.on("disconnect", socket => {
@@ -43,6 +85,7 @@ io.on("connection", socket => {
 app.post("/game", (req, res) => {
   //make a new player object with is_judge set to true because this person created the game
   const { avatar, username } = req.body;
+  req.session.user = username;
   const player = new Player(username, avatar, true);
   var pin = Math.floor(Math.random() * 100000);
 
@@ -54,7 +97,9 @@ app.post("/game", (req, res) => {
     cards: [...cards],
     chosenCards: [],
     game_finished: false,
-    pin
+    pin,
+    current_player: player.username,
+    gif: null
   };
   allGames.push(newGame);
   res.status(200).send(newGame);
@@ -62,13 +107,17 @@ app.post("/game", (req, res) => {
 
 app.get("/game", (req, res) => {
   //All info needed to get a game, add a player, and return it
-  const { pin } = req.query;
-  const game = allGames.filter(game => game.pin == pin)[0];
-
-  if (game) {
-    res.status(200).send(game);
+  if (req.query.pin) {
+    const { pin, username } = req.query;
+    const game = allGames.filter(game => game.pin == pin)[0];
+    req.session.user = username;
+    if (game) {
+      res.status(200).send(game);
+    } else {
+      res.status(400).send("No game");
+    }
   } else {
-    res.status(400).send("No game");
+    res.status(200).send(req.session.user);
   }
 });
 

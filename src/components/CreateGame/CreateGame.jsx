@@ -27,14 +27,6 @@ export default class CreateGame extends Component {
 
   handleSubmit = () => {
     const { username, avatar } = this.state;
-    store.dispatch({
-      type: CREATE_GAME,
-      payload: {
-        username,
-        avatar,
-        is_judge: true
-      }
-    });
     Axios.post("/game", {
       username,
       avatar

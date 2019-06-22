@@ -17,12 +17,6 @@ export default class JoinGame extends Component {
     };
   }
 
-  componentDidMount = () => {
-    socket.on("new player", data => {
-      console.log(data);
-    });
-  };
-
   handlePin = pin => {
     this.setState({
       pin
@@ -39,7 +33,7 @@ export default class JoinGame extends Component {
     const { username, avatar, pin } = this.state;
 
     socket.emit("add player", { username, avatar, pin });
-    Axios.get(`/game?pin=${pin}`).then(res => {
+    Axios.get(`/game?pin=${pin}&username=${username}`).then(res => {
       store.dispatch({
         type: UPDATE_GAME,
         payload: res.data

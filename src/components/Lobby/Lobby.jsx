@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Axios from "axios";
-import store from "../../store";
-import './Lobby.css'
+import store, { SET_CURRENT_USER } from "../../store";
+import "./Lobby.css";
 import socketIOClient from "socket.io-client";
 const socket = socketIOClient("http://localhost:4000");
 
@@ -32,6 +32,7 @@ export default class Lobby extends Component {
         pin: game.pin,
         current_user: this.state.users[this.state.users.length - 1]
       });
+
     });
 
     socket.on("new user", data => {
@@ -46,24 +47,31 @@ export default class Lobby extends Component {
   };
 
   startGame = () => {
-    socket.emit("start", { pin: this.state.pin });
+    const { pin } = this.state;
+  
+    socket.emit("start", { pin });
   };
+
   render() {
     const game_pin = this.state.pin || "Setting up lobby...";
     const users = this.state.users.map(user => {
       return (
-        <div className = 'user'> 
+        <div className="user">
           <h1>{user.username}</h1>
-          <img src={user.avatar.url} className = 'user-avatar' alt = 'user avatar'></img>
+          <img
+            src={user.avatar.url}
+            className="user-avatar"
+            alt="user avatar"
+          />
         </div>
       );
     });
     return (
       this.state.current_user && (
-        <div className = 'lobby-main'>
+        <div className="lobby-main">
           <h1>GAME PIN: {game_pin}</h1>
           <h3>Waiting for users...</h3>
-          <div className = 'users'>{users}</div>
+          <div className="users">{users}</div>
           {this.state.current_user.is_judge && (
             <button onClick={this.startGame}>Start</button>
           )}

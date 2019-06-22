@@ -1,33 +1,26 @@
 module.exports = {
   cards: [
     {
-      url: "https://giphy.com/gifs/u0LxmF9QVeDoQ"
+      url: "https://media.giphy.com/media/u0LxmF9QVeDoQ/giphy.gif"
     },
     {
-      url: "ttps://giphy.com/gifs/funny-fail-whoops-KHJw9NRFDMom487qyo"
+      url: "https://media.giphy.com/media/KHJw9NRFDMom487qyo/giphy.gif"
     },
     {
-      url: "https://giphy.com/gifs/1d7F9xyq6j7C1ojbC5"
+      url: "https://media.giphy.com/media/1d7F9xyq6j7C1ojbC5/giphy.gif"
     },
     {
-      url: "https://giphy.com/gifs/funny-gif-gifs-1szsUXsIG7ENq"
+      url: "https://media.giphy.com/media/1szsUXsIG7ENq/giphy.gif"
     },
     {
-      url: "https://giphy.com/gifs/EimNpKJpihLY4"
+      url: "https://media.giphy.com/media/EimNpKJpihLY4/giphy.gif"
+    },
+
+    {
+      url: "https://media.giphy.com/media/I4fvDjTDt7OWQ/giphy.gif"
     },
     {
-      url:
-        'https://giphy.com/embed/fsZDtb6PW6uuQ" width="480" height="354" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/infomercials-fsZDtb6PW6uuQ'
-    },
-    {
-      url:
-        'https://giphy.com/embed/pK0TxxjlhLSwM" width="480" height="320" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/infomercial-soda-snacks-pK0TxxjlhLSwM'
-    },
-    {
-      url: "https://giphy.com/gifs/cheezburger-infomercial-fail-I4fvDjTDt7OWQ"
-    },
-    {
-      url: "https://giphy.com/gifs/afv-funny-fail-lol-l4KibWpBGWchSqCRy"
+      url: "https://media.giphy.com/media/l4KibWpBGWchSqCRy/giphy.gif"
     }
   ]
 };
