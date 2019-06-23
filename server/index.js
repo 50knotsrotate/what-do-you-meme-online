@@ -58,15 +58,11 @@ io.on("connection", socket => {
   socket.on("get gif", data => {
     const { pin } = data;
     const game = allGames.filter(game => game.pin == pin)[0];
-    console.log(game);
     io.in(pin).emit("got gif", game.gif);
-    // socket.emit('got gif', game.gif)
   });
 
   socket.on("set gif", data => {
-    console.log('set gif called')
     const { pin } = data;
-    console.log(io.sockets.adapter.rooms[pin].sockets);
     const game = allGames.filter(game => game.pin == pin)[0];
     game.gif = getGif(game, game.cards);
     socket.emit('got gif', game.gif)
@@ -98,7 +94,7 @@ app.post("/game", (req, res) => {
     chosenCards: [],
     game_finished: false,
     pin,
-    current_player: player.username,
+    current_player: player,
     gif: null
   };
   allGames.push(newGame);

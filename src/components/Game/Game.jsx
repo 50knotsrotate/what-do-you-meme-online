@@ -19,9 +19,15 @@ export default class Game extends Component {
   }
 
   is_judge = username => { 
-
      const isJudge = this.state.users.filter(user => user.username == username)[0].is_judge
      return isJudge
+  }
+
+  set_current_player = username => { 
+    //I really dont like how I had to do this in here. This is something 
+    //that should be done on the backend, but my lack of planning 
+    //made me code myself into a wall. Live and learn. 
+    return this.state.users.filter(user => user.username === username)[0];
   }
 
   getGif = () => { 
@@ -62,12 +68,10 @@ export default class Game extends Component {
     return (
       this.state.cards && (
         <div>
-          {console.log(this.state)}
           <img
             src={this.state.gif}
             alt="gif"
           />
-          <button onClick={this.getGif}>Click me!</button>
           <h1>{this.state.current_user}</h1>
         </div>
       )

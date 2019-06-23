@@ -21,17 +21,19 @@ module.exports = {
   },
   distributeCards: function(game, cards) {
     for (let i = 0; i < game.users.length; i++) {
-      game.users[i].cards = cards.splice(0, 5);
+      if (!game.users[i].is_judge) {
+        game.users[i].cards = cards.splice(0, 5);
+      }
     }
     return game; //Can we get rid of return?
   },
-  getGif(game, cards) { 
+  getGif(game, cards) {
     //Select random card
     const index = Math.floor(Math.random() * cards.length);
 
     //Take it out
     const gif = cards.splice(index, 1)[0];
 
-    return gif
+    return gif;
   }
 };
