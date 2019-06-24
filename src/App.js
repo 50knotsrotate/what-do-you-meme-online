@@ -3,7 +3,7 @@ import routes from "./routes";
 import "./App.css";
 
 function App() {
-  return routes;
+  return <span>{routes}</span>
 }
 
 export default App;
