@@ -7,7 +7,15 @@ const path = require("path");
 const { Player } = require("./gameObjects/Player");
 const { cards } = require("./gameObjects/cards");
 const { player_cards } = require("./gameObjects/player_cards");
-const { shuffle, distributeCards, getGif } = require("./helpers");
+
+const {
+  shuffle,
+  distributeCards,
+  getGif,
+  remove_card_from_user,
+  add_to_chosen_cards,
+  replace_card
+} = require("./helpers");
 
 app.use(express.json());
 app.use(
@@ -42,17 +50,65 @@ io.on("connection", socket => {
   socket.on("create game", data => {
     const { pin } = data;
     const game = allGames.filter(game => game.pin == pin)[0];
-    socket.join(data.pin)
+    socket.join(pin);
+    if (!game.game_created) {
+      game.game_created = true;
 
-    //Shuffle the cards
-    game.cards = [...shuffle(cards)];
+      //Shuffle the gifs
+      game.cards = shuffle(cards);
 
-    //Putting into variable because const
-    var playerCards = [...shuffle(player_cards)];
+      //Putting into variable because const
+      var playerCards = shuffle([...player_cards]);
 
-    // distribute cards
-    distributeCards(game, playerCards);
-    socket.emit("game created", { game });
+      // distribute cards
+      distributeCards(game, playerCards);
+      socket.emit("game created", { game });
+    } else {
+      socket.emit("game created", { game });
+    }
+  });
+
+  socket.on('judge chose card', data => { 
+    const { user, pin } = data;
+    const game = allGames.filter(game => game.pin == pin)[0];
+
+    const current_judge = game.users.filter(game_user => game_user.is_judge)[0];  
+    
+    replace_card(game, cards);
+    const winner = game.users.filter(game_user => game_user.username === user)[0];
+    winner.is_judge = true;
+  
+    current_judge.is_judge = false;
+
+    if (game.current_player.username == winner.username) {
+      game.current_player.is_judge = true;
+    } else { 
+       game.current_player.is_judge = false;
+    }
+  game.chosenCards = [];
+    socket.to(pin).emit('change judges', game);
+    socket.emit('change judges', game);
+  })
+
+  socket.on("player chose card", data => {
+    const { card, user, pin } = data;
+
+    const game = allGames.filter(game => game.pin == pin)[0];
+
+    //Take the card out of players deck
+    remove_card_from_user(user, card);
+
+    //Add it to chosen cards
+    game.chosenCards.push({ card, user: user.username });
+    // add_to_chosen_cards(game, card);
+
+    socket
+      .to(pin)
+      .emit("update chosen cards", { cards: game.chosenCards, user });
+
+    //Replace player with a new card
+
+    //Emit
   });
 
   socket.on("get gif", data => {
@@ -65,8 +121,8 @@ io.on("connection", socket => {
     const { pin } = data;
     const game = allGames.filter(game => game.pin == pin)[0];
     game.gif = getGif(game, game.cards);
-    socket.emit('got gif', game.gif)
-      socket.to(pin).emit("got gif", game.gif);
+    socket.emit("got gif", game.gif);
+    socket.to(pin).emit("got gif", game.gif);
   });
 
   socket.on("disconnect", socket => {
@@ -95,7 +151,8 @@ app.post("/game", (req, res) => {
     game_finished: false,
     pin,
     current_player: player,
-    gif: null
+    gif: null,
+    game_created: false
   };
   allGames.push(newGame);
   res.status(200).send(newGame);

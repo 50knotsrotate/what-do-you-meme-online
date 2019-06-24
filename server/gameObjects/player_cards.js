@@ -1,6 +1,5 @@
 const player_cards = [
     'When you have only been dating 10 years and she already wants to meet your parents',
-    'When the beat drops',
     'When the reply \'K\'',
     'When you hear a baby crying but you\'re home alone and dont have a baby',
     'When you rap the whole verse correct',

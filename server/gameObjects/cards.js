@@ -41,6 +41,23 @@ module.exports = {
     },
     {
       url: "https://media.giphy.com/media/sgswHaZw5yklq/giphy.gif"
+    },
+    {
+      url: "https://media.giphy.com/media/l41lFw057lAJQMwg0/giphy.gif"
+    },
+    {
+      url:
+        "https://media.giphy.com/media/ZUomWFktUWpFu/giphy-downsized-large.gif"
+    },
+    {
+      url: "https://media.giphy.com/media/TLqkzhMIZxAQg/giphy.gif"
+    },
+    {
+      url:
+        "https://media.giphy.com/media/TfKfqjt2i4GIM/giphy-downsized-large.gif"
+    },
+    {
+      url: "https://media.giphy.com/media/3NtY188QaxDdC/giphy.gif"
     }
   ]
 };

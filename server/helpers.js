@@ -1,6 +1,5 @@
 module.exports = {
   shuffle: function shuffle(cards) {
-    //Taken from stack overflow cause I am lazy
     var currentIndex = cards.length,
       temporaryValue,
       randomIndex;
@@ -21,19 +20,37 @@ module.exports = {
   },
   distributeCards: function(game, cards) {
     for (let i = 0; i < game.users.length; i++) {
-      if (!game.users[i].is_judge) {
-        game.users[i].cards = cards.splice(0, 5);
+      for (let j = 0; j < 5; j++) { 
+        const random = Math.floor(Math.random() * cards.length)
+        game.users[i].cards.push({
+          card: cards[random],
+          user: game.users[i].username
+        })
+        cards.splice(random, 1);
       }
     }
-    return game; //Can we get rid of return?
   },
   getGif(game, cards) {
-    //Select random card
+
     const index = Math.floor(Math.random() * cards.length);
 
-    //Take it out
     const gif = cards.splice(index, 1)[0];
 
     return gif;
+  },
+  remove_card_from_user: function(player, card) { 
+    // const { cards } = player;
+
+    const card_to_remove = player.cards.findIndex(player_card => player_card.card === card);
+
+    player.cards.splice(card_to_remove , 1);
+  },
+  replace_card: function (game, cards) { 
+
+    for (let i = 0; i < game.users.length; i++) { 
+      if (game.users[i].cards.length != 5) { 
+        game.users[i].cards.push(cards[Math.floor(Math.random() * cards.length)])
+      }
+    }
   }
 };
