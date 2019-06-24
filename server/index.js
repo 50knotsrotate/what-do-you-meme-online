@@ -23,6 +23,8 @@ app.use(
     secret: "shhh, its a secret!"
   })
 );
+
+// app.use(express.static(`${__dirname}/../build`));
 const allGames = [];
 
 io.on("connection", socket => {
@@ -174,8 +176,9 @@ app.get("/game", (req, res) => {
   }
 });
 
+server.listen(4001, () => console.log(`server running on port ${4001}`));
+
 // app.get("*", (req, res) => {
 //   res.sendFile(path.join(__dirname, "../build/index.html"));
-// });  For production
+// });
 
-server.listen(4000, () => console.log(`server running on port ${4000}`));

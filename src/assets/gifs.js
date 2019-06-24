@@ -28,6 +28,12 @@ module.exports = {
     },
     {
       url: "https://giphy.com/gifs/afv-funny-fail-lol-l4KibWpBGWchSqCRy"
+    },
+    {
+      url: "https://media.giphy.com/media/12zgyJya7QwQKI/giphy.gif"
+    },
+    {
+      url: "https://media.giphy.com/media/649rruiSkqnyU/giphy.gif"
     }
   ]
 };

@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import store, { UPDATE_GAME } from "../../store";
- import './Game.css';
+import './Game.css';
 import socketIOClient from "socket.io-client";
 import axios from "axios";
 import Cards from "../Cards/Cards";
 import { declareExportAllDeclaration } from "@babel/types";
-const socket = socketIOClient("http://localhost:4000");
+const socket = socketIOClient("http://localhost:4001");
 
 export default class Game extends Component {
   constructor() {
@@ -127,7 +127,11 @@ export default class Game extends Component {
   };
 
   judgeCard = user => {
-    socket.emit("judge chose card", { user, pin: this.state.pin });
+    if (this.state.chosenCards.length === this.state.users.length - 1) {
+      socket.emit("judge chose card", { user, pin: this.state.pin });
+    } else { 
+      alert('Hang on!!! not everyone has chosen a card yet.');
+    }
   };
 
   render() {

@@ -4,7 +4,7 @@ import Axios from "axios";
 import "./JoinGame.css";
 import store, { UPDATE_GAME } from "../../store";
 import socketIOClient from "socket.io-client";
-const socket = socketIOClient("http://localhost:4000");
+const socket = socketIOClient("http://localhost:4001");
 
 export default class JoinGame extends Component {
   constructor() {

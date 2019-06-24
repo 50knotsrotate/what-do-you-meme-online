@@ -21,7 +21,8 @@ const player_cards = [
     'When your crush does anything ever',
     'When you didnt raise your hand but the teacher called on you anyway',
     'When she texts back',
-    'When your dad shows you his baseball collection for the 100th time'
+    'When your dad shows you his baseball collection for the 100th time',
+    'When your brain isn\'t working'
 ]
 
 module.exports = {
