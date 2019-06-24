@@ -24,7 +24,7 @@ app.use(
   })
 );
 
-// app.use(express.static(`${__dirname}/../build`));
+app.use(express.static(`${__dirname}/../build`));
 const allGames = [];
 
 io.on("connection", socket => {
@@ -178,7 +178,7 @@ app.get("/game", (req, res) => {
 
 server.listen(4001, () => console.log(`server running on port ${4001}`));
 
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "../build/index.html"));
-// });
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../build/index.html"));
+});
 
