@@ -5,7 +5,7 @@ import socketIOClient from "socket.io-client";
 import axios from "axios";
 import Cards from "../Cards/Cards";
 import { declareExportAllDeclaration } from "@babel/types";
-const socket = socketIOClient("http://localhost:4001");
+const socket = socketIOClient();
 
 export default class Game extends Component {
   constructor() {

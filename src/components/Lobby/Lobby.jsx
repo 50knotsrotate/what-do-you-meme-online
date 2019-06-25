@@ -3,7 +3,7 @@ import Axios from "axios";
 import store, { SET_CURRENT_USER } from "../../store";
 import "./Lobby.css";
 import socketIOClient from "socket.io-client";
-const socket = socketIOClient("http://localhost:4001");
+const socket = socketIOClient();
 
 export default class Lobby extends Component {
   constructor() {
