@@ -50,6 +50,8 @@ export default class Game extends Component {
         user => user.username == this.state.current_user.username
       )[0];
 
+      console.log(new_current_user.cards);
+
       this.setState({
         current_user: new_current_user,
         cards: data.cards,
@@ -113,7 +115,7 @@ export default class Game extends Component {
     if (!this.state.choseCard) {
       socket.emit("player chose card", {
         card,
-        user: this.state.current_user,
+        username: this.state.current_user.username,
         pin: this.state.pin
       });
 
