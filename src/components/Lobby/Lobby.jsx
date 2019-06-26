@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Axios from "axios";
+import store, { SET_CURRENT_USER } from "../../store";
 import "./Lobby.css";
 import socketIOClient from "socket.io-client";
 const socket = socketIOClient();
@@ -8,36 +9,33 @@ export default class Lobby extends Component {
   constructor() {
     super();
     this.state = {
-      pin: null,
       users: [],
       current_user: null
     };
   }
 
   componentDidMount = () => {
-    const game = reduxState.payload;
-    this.setState({
-      pin: game.pin,
-      users: game.users
-    });
+    const pin = this.props.location.search.split("?")[1];
+    // socket.emit('new player')
 
-    this.setState({
-      current_user: this.state.users[this.state.users.length - 1]
-    });
+    socket.emit("get lobby", pin);
 
-    socket.emit("socket join", {
-      pin: game.pin,
-      current_user: this.state.users[this.state.users.length - 1]
+    //Socket listeners
+    //When a new player joins the lobby
+    socket.on("got lobby", ({ users }) => {
+      if (!this.startGame.current_user) {
+        const new_user = users[users.length - 1];
+        this.setState({
+          users,
+          current_user: new_user
+        });
+      }
     });
-
-    socket.on("new user", data => {
+    socket.on("new player", user => {
+      alert("new player");
       this.setState({
-        users: data
+        users: [...this.state.users, user]
       });
-    });
-
-    socket.on("start game", () => {
-      this.props.history.push("/play");
     });
   };
 
@@ -64,7 +62,7 @@ export default class Lobby extends Component {
     return (
       this.state.current_user && (
         <div className="lobby-main">
-          <h1>GAME PIN: {game_pin}</h1>
+          <h1>GAME PIN: {this.props.location.search.split("?")[1]}</h1>
           <h3>Waiting for users...</h3>
           <div className="users">{users}</div>
           {this.state.current_user.is_judge && (

@@ -15,6 +15,10 @@ export default class CreateGame extends Component {
     };
   }
 
+  componentDidMount = () => {
+    socket.on('game created', (game) => this.props.history.push(`/lobby?${game.pin}`));
+  }
+
   handleUsername = username => {
     this.setState({
       username
@@ -24,7 +28,6 @@ export default class CreateGame extends Component {
   handleSubmit = () => {
     const { username, avatar } = this.state;
     socket.emit('create game', { username, avatar })
-    this.props.history.push('/lobby');
   };
 
   selectAvatar = avatar => {

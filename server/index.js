@@ -7,7 +7,7 @@ const path = require("path");
 const { Player } = require("./gameObjects/Player");
 const { cards } = require("./gameObjects/cards");
 const { player_cards } = require("./gameObjects/player_cards");
-const sockets = require('./sockets_controller');
+const sockets = require("./sockets_controller");
 
 const {
   shuffle,
@@ -29,27 +29,30 @@ app.use(express.static(`${__dirname}/../build`));
 const allGames = [];
 
 io.on("connection", socket => {
+  socket.on("create game", user => sockets.createGame(user, socket));
 
-  socket.on('create game', user => sockets.createGame(user, socket));
+  socket.on("get lobby", pin => sockets.getLobby(pin, socket, io));
 
-  socket.on("socket join", data => {
-    const { pin } = data;
-    const game = allGames.filter(game => game.pin == pin)[0];
-    socket.join(pin);
-    io.in(pin).emit("new user", game.users);
-  });
+  socket.on('add player', data => sockets.addPlayer(data, socket, io));
 
-  socket.on("add player", data => {
-    const { pin, username, avatar } = data;
-    const game = allGames.filter(game => game.pin == pin)[0];
-    if (game) {
-      const player = new Player(username, avatar, false);
-      game.users.push(player);
-      socket.emit("new player", game);
-    } else {
-      socket.emit("error"); //TODO: proper error handling
-    }
-  });
+  // socket.on("socket join", data => {
+  //   const { pin } = data;
+  //   const game = allGames.filter(game => game.pin == pin)[0];
+  //   socket.join(pin);
+  //   io.in(pin).emit("new user", game.users);
+  // });
+
+  // socket.on("add player", data => {
+  //   const { pin, username, avatar } = data;
+  //   const game = allGames.filter(game => game.pin == pin)[0];
+  //   if (game) {
+  //     const player = new Player(username, avatar, false);
+  //     game.users.push(player);
+  //     socket.emit("new player", game);
+  //   } else {
+  //     socket.emit("error"); //TODO: proper error handling
+  //   }
+  // });
 
   // socket.on("create game", data => {
   //   const { pin } = data;
