@@ -21,12 +21,11 @@ module.exports = {
   distributeCards: function(game, cards) {
     for (let i = 0; i < game.users.length; i++) {
       for (let j = 0; j < 5; j++) { 
-        const random = Math.floor(Math.random() * cards.length)
         game.users[i].cards.push({
-          card: cards[random],
+          card: cards[j],
           user: game.users[i].username
         })
-        cards.splice(random, 1);
+        cards.splice(j, 1);
       }
     }
   },
