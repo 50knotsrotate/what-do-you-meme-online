@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import store, { UPDATE_GAME } from "../../store";
 import './Game.css';
-import socketIOClient from "socket.io-client";
 import axios from "axios";
 import Cards from "../Cards/Cards";
-import { declareExportAllDeclaration } from "@babel/types";
+import socketIOClient from "socket.io-client";
 const socket = socketIOClient();
 
 export default class Game extends Component {

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import Axios from "axios";
-import store, { SET_CURRENT_USER } from "../../store";
 import "./Lobby.css";
 import socketIOClient from "socket.io-client";
 const socket = socketIOClient();
@@ -16,23 +15,19 @@ export default class Lobby extends Component {
   }
 
   componentDidMount = () => {
-    store.subscribe(() => {
-      const reduxState = store.getState();
-      const game = reduxState.payload;
-      this.setState({
-        pin: game.pin,
-        users: game.users
-      });
+    const game = reduxState.payload;
+    this.setState({
+      pin: game.pin,
+      users: game.users
+    });
 
-      this.setState({
-        current_user: this.state.users[this.state.users.length - 1]
-      });
+    this.setState({
+      current_user: this.state.users[this.state.users.length - 1]
+    });
 
-      socket.emit("socket join", {
-        pin: game.pin,
-        current_user: this.state.users[this.state.users.length - 1]
-      });
-
+    socket.emit("socket join", {
+      pin: game.pin,
+      current_user: this.state.users[this.state.users.length - 1]
     });
 
     socket.on("new user", data => {
@@ -48,7 +43,7 @@ export default class Lobby extends Component {
 
   startGame = () => {
     const { pin } = this.state;
-  
+
     socket.emit("start", { pin });
   };
 

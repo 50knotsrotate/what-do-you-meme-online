@@ -7,6 +7,7 @@ const path = require("path");
 const { Player } = require("./gameObjects/Player");
 const { cards } = require("./gameObjects/cards");
 const { player_cards } = require("./gameObjects/player_cards");
+const sockets = require('./sockets_controller');
 
 const {
   shuffle,
@@ -28,7 +29,8 @@ app.use(express.static(`${__dirname}/../build`));
 const allGames = [];
 
 io.on("connection", socket => {
-  console.log("a user has connected");
+
+  socket.on('create game', user => sockets.createGame(user, socket));
 
   socket.on("socket join", data => {
     const { pin } = data;
@@ -49,30 +51,30 @@ io.on("connection", socket => {
     }
   });
 
-  socket.on("create game", data => {
-    const { pin } = data;
-    const game = allGames.filter(game => game.pin == pin)[0];
-    socket.join(pin);
-    if (!game.game_created) {
-      game.game_created = true;
+  // socket.on("create game", data => {
+  //   const { pin } = data;
+  //   const game = allGames.filter(game => game.pin == pin)[0];
+  //   socket.join(pin);
+  //   if (!game.game_created) {
+  //     game.game_created = true;
 
-      //Shuffle the gifs
-      const game_cards = cards.slice();
+  //     //Shuffle the gifs
+  //     const game_cards = cards.slice();
 
-      game.cards = shuffle(game_cards);
+  //     game.cards = shuffle(game_cards);
 
-      const playerCards = player_cards.slice();
+  //     const playerCards = player_cards.slice();
 
-      //Putting into variable because const
-      game.player_cards = shuffle(playerCards);
+  //     //Putting into variable because const
+  //     game.player_cards = shuffle(playerCards);
 
-      // distribute cards
-      distributeCards(game, game.player_cards);
-      socket.emit("game created", { game });
-    } else {
-      socket.emit("game created", { game });
-    }
-  });
+  //     // distribute cards
+  //     distributeCards(game, game.player_cards);
+  //     socket.emit("game created", { game });
+  //   } else {
+  //     socket.emit("game created", { game });
+  //   }
+  // });
 
   socket.on("judge chose card", data => {
     const { user, pin } = data;
