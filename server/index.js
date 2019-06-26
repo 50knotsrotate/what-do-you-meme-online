@@ -57,52 +57,78 @@ io.on("connection", socket => {
       game.game_created = true;
 
       //Shuffle the gifs
-      game.cards = shuffle(cards);
+      const game_cards = cards.slice();
+
+      game.cards = shuffle(game_cards);
+
+      const playerCards = player_cards.slice();
 
       //Putting into variable because const
-      var playerCards = shuffle([...player_cards]);
+      game.player_cards = shuffle(playerCards);
 
       // distribute cards
-      distributeCards(game, playerCards);
+      distributeCards(game, game.player_cards);
       socket.emit("game created", { game });
     } else {
       socket.emit("game created", { game });
     }
   });
 
-  socket.on('judge chose card', data => { 
+  socket.on("judge chose card", data => {
     const { user, pin } = data;
     const game = allGames.filter(game => game.pin == pin)[0];
+    const current_judge = game.users.filter(game_user => game_user.is_judge)[0];
 
-    const current_judge = game.users.filter(game_user => game_user.is_judge)[0];  
-    
-    replace_card(game, cards);
-    const winner = game.users.filter(game_user => game_user.username === user)[0];
+    // for (let i = 0; i < game.users.length; i++) {
+    //   if (game.users[i].length == 4) {
+    //     game.users[i].cards = replace_card(game.users[i], game.player_cards);
+    //   }
+    // }
+
+    const winner = game.users.filter(
+      game_user => game_user.username === user
+    )[0];
     winner.is_judge = true;
-  
+
     current_judge.is_judge = false;
+
+    let random = Math.floor(Math.random() * game.player_cards.length);
+    let newCard = game.player_cards.splice(random, 1)[0];
+
+    for (let i = 0; i < game.users.length; i++) {
+      if (game.users[i].cards.length != 5) {
+        game.users[i].cards.push({ card: newCard, user });
+      }
+    }
 
     if (game.current_player.username == winner.username) {
       game.current_player.is_judge = true;
-    } else { 
-       game.current_player.is_judge = false;
+    } else {
+      game.current_player.is_judge = false;
     }
-  game.chosenCards = [];
-    socket.to(pin).emit('change judges', game);
-    socket.emit('change judges', game);
-  })
+    game.chosenCards = [];
+    socket.to(pin).emit("change judges", game);
+    socket.emit("change judges", game);
+  });
 
   socket.on("player chose card", data => {
-    const { card, user, pin } = data;
+    const { card, username, pin } = data;
 
     const game = allGames.filter(game => game.pin == pin)[0];
 
+    const user = game.users.filter(u => u.username == username)[0];
+
     //Take the card out of players deck
-    remove_card_from_user(user, card);
+    // remove_card_from_user(user, card);
+    const card_to_remove = user.cards.findIndex(
+      player_card => player_card.card === card
+    );
+    user.cards.splice(card_to_remove, 1);
+
+    // replace_card(game, game.player_cards);
 
     //Add it to chosen cards
     game.chosenCards.push({ card, user: user.username });
-    // add_to_chosen_cards(game, card);
 
     socket
       .to(pin)
@@ -148,7 +174,7 @@ app.post("/game", (req, res) => {
   }
   const newGame = {
     users: [player],
-    cards: [...cards],
+    cards: null,
     chosenCards: [],
     game_finished: false,
     pin,
@@ -181,4 +207,3 @@ server.listen(4001, () => console.log(`server running on port ${4001}`));
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../build/index.html"));
 });
-

@@ -19,7 +19,8 @@ export default class Game extends Component {
       current_user: null,
       gif: null,
       loaded: false,
-      choseCard: false
+      choseCard: false,
+      player_cards: null
     };
   }
 
@@ -49,6 +50,8 @@ export default class Game extends Component {
         user => user.username == this.state.current_user.username
       )[0];
 
+      console.log(new_current_user.cards);
+
       this.setState({
         current_user: new_current_user,
         cards: data.cards,
@@ -72,13 +75,15 @@ export default class Game extends Component {
       const { pin } = redux.payload;
       socket.emit("create game", { pin });
       socket.on("game created", data => {
+        console.log(data);
         const {
           cards,
           chosenCards,
           game_finished,
           pin,
           users,
-          gif
+          gif,
+          player_cards
         } = data.game;
 
         const username = res.data;
@@ -93,7 +98,8 @@ export default class Game extends Component {
           pin,
           users,
           current_user: current_player,
-          loaded: true
+          loaded: true,
+          player_cards
         });
 
         if (this.is_judge(this.state.current_user)) {
@@ -109,20 +115,33 @@ export default class Game extends Component {
     if (!this.state.choseCard) {
       socket.emit("player chose card", {
         card,
-        user: this.state.current_user,
+        username: this.state.current_user.username,
         pin: this.state.pin
       });
+
+      //Get the current user
       const player = this.state.current_user;
 
+      //Find the card that was picked
       const index = player.cards.findIndex(
         player_card => player_card.card == card
       );
+
+      //Remove it from that players cards
       const new_cards = player.cards.splice(index, 1);
+
+      //And then replace that card with a new one
+      //In order for that to happen, make a copy of all available cards
+      const player_cards_copy = [...this.state.player_cards];
+
+      const new_player_card = player_cards_copy.splice(
+        Math.floor(Math.random() * this.state.player_cards.length)
+      );
 
       this.setState({
         current_user: player,
         choseCard: true
-      });
+      })
     }
   };
 
