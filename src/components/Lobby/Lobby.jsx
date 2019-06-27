@@ -3,7 +3,7 @@ import Axios from "axios";
 import store, { SET_CURRENT_USER } from "../../store";
 import "./Lobby.css";
 import socketIOClient from "socket.io-client";
-const socket = socketIOClient();
+const socket = socketIOClient('http://localhost:4001/lobby');
 
 export default class Lobby extends Component {
   constructor() {
@@ -15,10 +15,9 @@ export default class Lobby extends Component {
   }
 
   componentDidMount = () => {
-    const pin = this.props.location.search.split("?")[1];
-    // socket.emit('new player')
+    this.pin = this.props.location.search.split("?")[1];
 
-    socket.emit("get lobby", pin);
+    socket.emit('get lobby', this.pin)
 
     //Socket listeners
     //When a new player joins the lobby
@@ -31,8 +30,10 @@ export default class Lobby extends Component {
         });
       }
     });
+
+    socket.on('start game', () => this.props.history.push(`/play?${this.pin}`));
+
     socket.on("new player", user => {
-      alert("new player");
       this.setState({
         users: [...this.state.users, user]
       });
