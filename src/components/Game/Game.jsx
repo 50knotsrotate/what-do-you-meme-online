@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import store, { UPDATE_GAME } from "../../store";
-import './Game.css';
-import socketIOClient from "socket.io-client";
+import "./Game.css";
 import axios from "axios";
 import Cards from "../Cards/Cards";
-import { declareExportAllDeclaration } from "@babel/types";
-const socket = socketIOClient();
+import socketIOClient from "socket.io-client";
+const socket = socketIOClient("http://localhost:4001/game");
 
 export default class Game extends Component {
   constructor() {
@@ -34,11 +33,46 @@ export default class Game extends Component {
 
   getGif = () => {
     socket.emit("set gif", {
-      pin: this.state.pin
+      pin: this.pin
     });
   };
 
   componentDidMount = () => {
+    this.pin = this.props.location.search.split("?")[1];
+
+    socket.emit("get game", this.pin);
+
+    socket.on("game created", data => {
+      const { socket_id, game } = data;
+
+      const {
+        cards,
+        chosenCards,
+        game_finished,
+        gif,
+        pin,
+        player_cards,
+        users
+      } = game;
+
+      const current_user = game.users.filter(u => u.socket_id == socket_id)[0];
+      if (this.is_judge(current_user)) {
+        this.getGif()
+      }
+
+      this.setState({
+        current_user,
+        cards,
+        chosenCards,
+        game_finished,
+        gif,
+        pin,
+        player_cards,
+        users,
+        loaded: true
+      });
+    });
+
     socket.on("update chosen cards", data => {
       this.setState({
         chosenCards: data.cards
@@ -67,46 +101,6 @@ export default class Game extends Component {
     socket.on("got gif", data => {
       this.setState({
         gif: data.url
-      });
-    });
-
-    axios.get("/game").then(res => {
-      const redux = store.getState();
-      const { pin } = redux.payload;
-      socket.emit("create game", { pin });
-      socket.on("game created", data => {
-        console.log(data);
-        const {
-          cards,
-          chosenCards,
-          game_finished,
-          pin,
-          users,
-          gif,
-          player_cards
-        } = data.game;
-
-        const username = res.data;
-        const current_player = users.filter(
-          user => user.username == username
-        )[0];
-
-        this.setState({
-          cards,
-          chosenCards,
-          game_finished,
-          pin,
-          users,
-          current_user: current_player,
-          loaded: true,
-          player_cards
-        });
-
-        if (this.is_judge(this.state.current_user)) {
-          socket.emit("set gif", {
-            pin: this.state.pin
-          });
-        }
       });
     });
   };
@@ -141,26 +135,26 @@ export default class Game extends Component {
       this.setState({
         current_user: player,
         choseCard: true
-      })
+      });
     }
   };
 
   judgeCard = user => {
     if (this.state.chosenCards.length === this.state.users.length - 1) {
       socket.emit("judge chose card", { user, pin: this.state.pin });
-    } else { 
-      alert('Hang on!!! not everyone has chosen a card yet.');
+    } else {
+      alert("Hang on!!! not everyone has chosen a card yet.");
     }
   };
 
   render() {
     return (
       this.state.loaded && (
-        <div className = 'game-wrapper'>
+        <div className="game-wrapper">
           {this.state.current_user.is_judge && (
             <h1>{this.state.current_user.username}, you are the judge!</h1>
           )}
-          <img src={this.state.gif} alt="gif" className='gif'/>
+          <img src={this.state.gif} alt="gif" className="gif" />
           {!this.is_judge(this.state.current_user) ? (
             <Cards
               cards={this.state.current_user.cards}
@@ -168,11 +162,11 @@ export default class Game extends Component {
               judge={false}
             />
           ) : (
-              <Cards
-                cards={this.state.chosenCards}
-                clicked={this.judgeCard}
-                judge={true}
-              />
+            <Cards
+              cards={this.state.chosenCards}
+              clicked={this.judgeCard}
+              judge={true}
+            />
           )}
         </div>
       )

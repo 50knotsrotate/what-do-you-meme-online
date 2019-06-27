@@ -1,14 +1,10 @@
 import React, { Component } from "react";
 import Axios from "axios";
 import store, { CREATE_GAME } from "../../store";
-// import Game from "../../assets/Game";
-// import Player from "../../assets/Player";
 import Avatars from "../Avatars/Avatars";
-// import constants from "../../Constants";
 import "./CreateGame.css";
-//In COmponent did mount, generate new game, show
-//game ID/pin on screen, choose username
-//Will also need to get all avatar URLS;
+import socketIOClient from "socket.io-client";
+const socket = socketIOClient('http://localhost:4001/create');
 
 export default class CreateGame extends Component {
   constructor() {
@@ -19,6 +15,10 @@ export default class CreateGame extends Component {
     };
   }
 
+  componentDidMount = () => {
+    socket.on('game created', (game) => this.props.history.push(`/lobby?${game.pin}`));
+  }
+
   handleUsername = username => {
     this.setState({
       username
@@ -27,16 +27,7 @@ export default class CreateGame extends Component {
 
   handleSubmit = () => {
     const { username, avatar } = this.state;
-    Axios.post("/game", {
-      username,
-      avatar
-    }).then(res => {
-      store.dispatch({
-        type: CREATE_GAME,
-        payload: res.data
-      });
-    });
-       this.props.history.push('/lobby');
+    socket.emit('create game', { username, avatar })
   };
 
   selectAvatar = avatar => {

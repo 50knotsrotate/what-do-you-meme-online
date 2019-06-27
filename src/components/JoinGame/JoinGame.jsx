@@ -4,7 +4,8 @@ import Axios from "axios";
 import "./JoinGame.css";
 import store, { UPDATE_GAME } from "../../store";
 import socketIOClient from "socket.io-client";
-const socket = socketIOClient();
+import { Socket } from "dgram";
+const socket = socketIOClient('http://localhost:4001/join');
 
 export default class JoinGame extends Component {
   constructor() {
@@ -30,16 +31,8 @@ export default class JoinGame extends Component {
   };
 
   handleSubmit = () => {
-    const { username, avatar, pin } = this.state;
-
-    socket.emit("add player", { username, avatar, pin });
-    Axios.get(`/game?pin=${pin}&username=${username}`).then(res => {
-      store.dispatch({
-        type: UPDATE_GAME,
-        payload: res.data
-      });
-    });
-    this.props.history.push("/lobby");
+    socket.emit('add player', this.state)
+    this.props.history.push( `/lobby?${this.state.pin}`);
   };
 
   handleUsername = username => {
