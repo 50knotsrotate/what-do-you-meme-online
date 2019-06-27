@@ -18,13 +18,14 @@ module.exports = {
 
     return cards;
   },
-  distributeCards: function (game, cards) {
+  distributeCards: function(game, cards) {
     for (let i = 0; i < game.users.length; i++) {
       for (let j = 0; j < 5; j++) {
         game.users[i].cards.push({
           card: cards[j],
           user: game.users[i].username
         });
+
         cards.splice(j, 1);
       }
     }
@@ -40,39 +41,43 @@ module.exports = {
     const card_to_remove = player.cards.findIndex(
       player_card => player_card.card === card
     );
+
     player.cards.splice(card_to_remove, 1);
   },
-  replace_card: function(user, cards) {
-    // for (let i = 0; i < game.users.length; i++) {
-    //   if (game.users[i].cards.length == 4) {
-    //     let random = Math.floor(Math.random() * game.player_cards.length);
-    //     let newCard = game.player_cards.splice(random, 1);
 
-    //     game.users[i].cards.push({
-    //       card: newCard,
-    //       user: game.users[i].username
-    //     });
-    //   }
-    // }
+  replace_cards: function(game) {
+    for (let i = 0; i < game.users.length; i++) {
+      if (game.users[i].cards.length == 4) {
+        let random = Math.floor(Math.random() * game.player_cards.length);
+        let newCard = game.player_cards.splice(random, 1);
 
-    return [...user.cards, {card: cards.splice( Math.floor(Math.random() * cards.length), 1), user: user.username}]
+        game.users[i].cards.push({
+          card: newCard,
+          user: game.users[i].username
+        });
+      }
+    }
+
+    // return [...user.cards, {card: cards.splice( Math.floor(Math.random() * cards.length), 1), user: user.username}]
   },
-  getCurrentGame: function (games, pin) { 
+  getCurrentGame: function(games, pin) {
     return games.filter(g => g.pin == pin)[0];
   },
-  updateJudges: function (user, game) { 
+  updateJudges: function(user, game) {
     const current_judge = game.users.filter(game_user => game_user.is_judge)[0];
-    
-    const winner = game.users.filter(game_user => game_user.username === user)[0];
-    
+
+    const winner = game.users.filter(
+      game_user => game_user.username === user
+    )[0];
+
     winner.is_judge = true;
 
     current_judge.is_judge = false;
 
-     if (game.current_player.username == winner.username) {
-       game.current_player.is_judge = true;
-     } else {
-       game.current_player.is_judge = false;
-     }
+    if (game.current_player.username == winner.username) {
+      game.current_player.is_judge = true;
+    } else {
+      game.current_player.is_judge = false;
+    }
   }
 };
