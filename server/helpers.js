@@ -49,7 +49,7 @@ module.exports = {
     for (let i = 0; i < game.users.length; i++) {
       if (game.users[i].cards.length == 4) {
         let random = Math.floor(Math.random() * game.player_cards.length);
-        let newCard = game.player_cards.splice(random, 1);
+        let newCard = game.player_cards.splice(random, 1)[0];
 
         game.users[i].cards.push({
           card: newCard,
