@@ -4,7 +4,7 @@ import store, { CREATE_GAME } from "../../store";
 import Avatars from "../Avatars/Avatars";
 import "./CreateGame.css";
 import socketIOClient from "socket.io-client";
-const socket = socketIOClient("http://134.209.170.80/create");
+const socket = socketIOClient('http://localhost:4001/create');
 
 export default class CreateGame extends Component {
   constructor() {

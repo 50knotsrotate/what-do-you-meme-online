@@ -5,7 +5,7 @@ import "./JoinGame.css";
 import store, { UPDATE_GAME } from "../../store";
 import socketIOClient from "socket.io-client";
 import { Socket } from "dgram";
-const socket = socketIOClient("http://134.209.170.80/join");
+const socket = socketIOClient('http://localhost:4001/join');
 
 export default class JoinGame extends Component {
   constructor() {
