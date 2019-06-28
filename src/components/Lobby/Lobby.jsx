@@ -65,10 +65,18 @@ export default class Lobby extends Component {
         <div className="lobby-main">
           <h1>GAME PIN: {this.props.location.search.split("?")[1]}</h1>
           <h3>Waiting for users...</h3>
+          <h4>Click start when everyone has joined</h4>
           <div className="users">{users}</div>
           {this.state.current_user.is_judge && (
-            <button onClick={this.startGame}>Start</button>
+            <button className = 'start-button' onClick={this.startGame}>Start</button>
           )}
+          <h5 style={{
+            textAlign: 'center',
+            width: '40vw',
+            margin: '0 auto'
+          }}>Are you a potential employer, friend, or just someone out there who wants to play a round?</h5>
+          <h5>Click here to let me know you wanna play a round. I'll get on if I can!</h5>
+          
         </div>
       )
     );

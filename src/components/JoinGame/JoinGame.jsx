@@ -43,14 +43,15 @@ export default class JoinGame extends Component {
 
   render() {
     return (
-      <div>
+      <div className='join-container'>
         <h1>Join Game</h1>
         <h2>Enter pin</h2>
-        <div>
+        <div className = 'join-buttons'>
           <input
             onChange={e => this.handlePin(e.target.value)}
             value={this.state.pin}
           />
+          <h2>Enter username</h2>
           <input
             onChange={e => this.handleUsername(e.target.value)}
             value={this.state.username}

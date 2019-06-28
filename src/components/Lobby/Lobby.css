@@ -5,20 +5,45 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    background: url('https://wallpapertag.com/wallpaper/full/9/e/4/119690-best-fun-background-2000x1556.jpg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: white;
+    font-family: monospace;
+    font-size: 1.4em;
 }
 
 .users {
     width: 300px;
     height: 500px;
     border: 1px solid red;
+    background-color: rgba(0,0,0,.5);
 }
 
 .user {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    border: 5px solid black;
+    padding: 10px;
 }
 
+.start-button {
+    width: 300px;
+    padding: 10px;
+    background-color: red;
+    color: white;
+    font-size: 30px;
+    font-weight: bold;
+    border-radius: 10px;
+    border: 2px solid red;
+}
+
+
+.start-button:hover {
+    cursor: pointer;
+}
 .user-avatar {
     width: 50px;
     height: 50px;

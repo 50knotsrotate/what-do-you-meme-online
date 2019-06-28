@@ -4,22 +4,10 @@ module.exports = {
       url: "https://media.giphy.com/media/u0LxmF9QVeDoQ/giphy.gif"
     },
     {
-      url: "https://media.giphy.com/media/KHJw9NRFDMom487qyo/giphy.gif"
-    },
-    {
       url: "https://media.giphy.com/media/1d7F9xyq6j7C1ojbC5/giphy.gif"
     },
     {
       url: "https://media.giphy.com/media/1szsUXsIG7ENq/giphy.gif"
-    },
-    {
-      url: "https://media.giphy.com/media/EimNpKJpihLY4/giphy.gif"
-    },
-    {
-      url: "https://media.giphy.com/media/I4fvDjTDt7OWQ/giphy.gif"
-    },
-    {
-      url: "https://media.giphy.com/media/l4KibWpBGWchSqCRy/giphy.gif"
     },
     {
       url: "https://media.giphy.com/media/nXxOjZrbnbRxS/giphy.gif"
@@ -58,6 +46,16 @@ module.exports = {
     },
     {
       url: "https://media.giphy.com/media/3NtY188QaxDdC/giphy.gif"
+    },
+    {
+      url: "https://media.giphy.com/media/5VKbvrjxpVJCM/giphy.gif"
+    },
+    {
+      url: "https://media.giphy.com/media/RKS1pHGiUUZ2g/giphy.gif"
+    },
+    {
+      url:
+        "https://media.giphy.com/media/uw9tlcY3PyNPy/giphy-downsized-large.gif"
     }
   ]
 };

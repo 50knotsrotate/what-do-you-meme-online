@@ -1,0 +1,20 @@
+.join-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: red;
+    background-image: url('http://2.bp.blogspot.com/-RCmO8sQMv3Y/Tg94AhEyqRI/AAAAAAAAF7s/9Nb0UHUFG-8/s1600/fun%2Bwallpaper%2Bbackgrounds-2.png');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    background-blend-mode: multiply;
+}
+
+
+.join-buttons {
+    display: flex;
+    flex-direction: column;
+}
