@@ -18,3 +18,9 @@
     display: flex;
     flex-direction: column;
 }
+
+@media only screen and (max-width: 414px){
+    h1, h2 {
+        font-size: .7em;
+    }
+}

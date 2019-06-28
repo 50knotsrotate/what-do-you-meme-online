@@ -8,3 +8,9 @@
     background-color: cyan;
     text-align: center;
 }
+
+@media only screen and (max-width: 414px){
+    h1, h2 {
+        font-size: .8em;
+    }
+}
