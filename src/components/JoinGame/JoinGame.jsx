@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import Avatars from "../Avatars/Avatars";
-import Axios from "axios";
 import "./JoinGame.css";
 import store, { UPDATE_GAME } from "../../store";
 import socketIOClient from "socket.io-client";

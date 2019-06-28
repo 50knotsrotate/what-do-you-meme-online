@@ -74,8 +74,11 @@ module.exports = {
 
       game.player_cards = shuffle(playerCards);
 
+
       distributeCards(game, game.player_cards);
     }
+
+    socket.join(game.pin);
 
     socket.emit("game created", {
       game,
@@ -88,7 +91,8 @@ module.exports = {
 
     game.gif = getGif(game, game.cards);
 
-    io.of("/game").emit("got gif", game.gif);
+    io.of('/game').in(game.pin).emit("got gif", game.gif);
+    socket.emit('got gif', game.gif)
   },
 
   playerChoseCard: (data, socket, io) => {
@@ -103,7 +107,7 @@ module.exports = {
     //Add it to chosen cards
     game.chosenCards.push({ card, user: user.username });
 
-    io.of("/game").emit("update chosen cards", {
+    io.of("/game").in(game.pin).emit("update chosen cards", {
       cards: game.chosenCards,
       user
     });
@@ -120,6 +124,6 @@ module.exports = {
 
     replace_cards(game, cards);
 
-    io.of("/game").emit("change judges", game);
+    io.of("/game").in(game.pin).emit("change judges", game);
   }
 };

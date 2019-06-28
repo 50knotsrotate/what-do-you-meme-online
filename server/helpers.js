@@ -63,7 +63,7 @@ module.exports = {
 
     // return [...user.cards, {card: cards.splice( Math.floor(Math.random() * cards.length), 1), user: user.username}]
   },
-  getCurrentGame: function(games, pin) {
+  getCurrentGame: function (games, pin) {
     return games.filter(g => g.pin == pin)[0];
   },
   updateJudges: function(user, game) {

@@ -2,6 +2,30 @@
     width: 100vw;
     height: 50vh;
     display: flex;
-    justify-content: space-evenly;
+    align-items: center;
+    justify-content: space-around;
     color: white;
+    flex-wrap: wrap;
 }
+
+.card {
+    height: 300px;
+    width: 300px;
+    background-color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border: 2px solid white;
+}
+
+/* @media only screen and (max-width: 414px) {
+    .card {
+        height: 140px;
+        width: 140px;
+    }
+
+    h3 {
+        font-size: .6em;
+    }
+} */
