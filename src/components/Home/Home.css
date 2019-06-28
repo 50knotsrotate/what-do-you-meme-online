@@ -12,6 +12,12 @@
     align-items: center;
 }
 
+.home-main {
+    width: 50vw;
+    margin: 0 auto;
+    text-align: center;
+}
+
 .buttons {
     width: 90%;
     margin: 0 auto;

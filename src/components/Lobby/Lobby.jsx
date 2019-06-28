@@ -17,7 +17,11 @@ export default class Lobby extends Component {
   componentDidMount = () => {
     this.pin = this.props.location.search.split("?")[1];
 
-    socket.emit('get lobby', this.pin)
+    socket.emit('get lobby', this.pin);
+
+    socket.on('message sent', () => { 
+      alert('I got your message. If I can get on to play a round, I will :] If I am not in the lobby in 5, try again later. I\'ll happily join if I am not busy.')
+    })
 
     //Socket listeners
     //When a new player joins the lobby
@@ -39,6 +43,11 @@ export default class Lobby extends Component {
       });
     });
   };
+
+  sendMessage = () => { 
+    const { username } = this.state.current_user
+    socket.emit('send message', {username, pin: this.pin})
+  }
 
   startGame = () => {
     const { pin } = this.state;
@@ -68,15 +77,24 @@ export default class Lobby extends Component {
           <h4>Click start when everyone has joined</h4>
           <div className="users">{users}</div>
           {this.state.current_user.is_judge && (
-            <button className = 'start-button' onClick={this.startGame}>Start</button>
+            <button className="start-button" onClick={this.startGame}>
+              Start
+            </button>
           )}
-          <h5 style={{
-            textAlign: 'center',
-            width: '40vw',
-            margin: '0 auto'
-          }}>Are you a potential employer, friend, or just someone out there who wants to play a round?</h5>
-          <h5>Click here to let me know you wanna play a round. I'll get on if I can!</h5>
-          
+          <h5
+            style={{
+              textAlign: "center",
+              width: "40vw",
+              margin: "0 auto"
+            }}
+          >
+            Are you a potential employer, friend, or just someone out there
+            who wants to play a round?
+          </h5>
+          <h5>
+            Click <span style={{ cursor: 'pointer', textDecoration: 'underline'}} onClick = {this.sendMessage}>here</span> to let me know you wanna play a round.
+            I'll get on if I can!
+          </h5>
         </div>
       )
     );

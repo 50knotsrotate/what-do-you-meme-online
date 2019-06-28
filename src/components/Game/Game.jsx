@@ -99,9 +99,13 @@ export default class Game extends Component {
     });
 
     socket.on("got gif", data => {
-      this.setState({
-        gif: data.url
-      });
+      if (data) {
+        this.setState({
+          gif: data.url
+        });
+      } else { 
+        alert('Uh oh! I am all out of gifs. Game over. Hope you had a good laugh or two!')
+      }
     });
   };
 

@@ -21,21 +21,23 @@ module.exports = {
   distributeCards: function(game, cards) {
     for (let i = 0; i < game.users.length; i++) {
       for (let j = 0; j < 5; j++) {
-        game.users[i].cards.push({
-          card: cards[j],
-          user: game.users[i].username
-        });
-
-        cards.splice(j, 1);
+        if (cards.length) {
+          game.users[i].cards.push({
+            card: cards[j],
+            user: game.users[i].username
+          });
+          cards.splice(j, 1);
+        }
       }
     }
   },
   getGif(game, cards) {
     const index = Math.floor(Math.random() * cards.length);
 
-    const gif = cards.splice(index, 1)[0];
-
-    return gif;
+    if (cards.length) {
+      const gif = cards.splice(index, 1)[0];
+      return gif;
+    }
   },
   remove_card_from_user: function(player, card) {
     const card_to_remove = player.cards.findIndex(
@@ -48,13 +50,14 @@ module.exports = {
   replace_cards: function(game) {
     for (let i = 0; i < game.users.length; i++) {
       if (game.users[i].cards.length == 4) {
-        let random = Math.floor(Math.random() * game.player_cards.length);
-        let newCard = game.player_cards.splice(random, 1)[0];
-
-        game.users[i].cards.push({
-          card: newCard,
-          user: game.users[i].username
-        });
+        if (game.player_cards.length) {
+          let random = Math.floor(Math.random() * game.player_cards.length);
+          let newCard = game.player_cards.splice(random, 1)[0];
+          game.users[i].cards.push({
+            card: newCard,
+            user: game.users[i].username
+          });
+        }
       }
     }
 

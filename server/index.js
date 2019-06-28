@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const express = require("express");
 const app = express();
 const server = require("http").Server(app);
@@ -5,6 +7,9 @@ var io = require("socket.io")(server);
 const path = require("path");
 const { Player } = require("./gameObjects/Player");
 const sockets = require("./sockets_controller");
+const { TWILIO_AUTH_TOKEN, TWILIO_SID, MY_PHONE_NUMBER } = process.env;
+const twilio = require('twilio');
+const { sendMessage } = require('./twilio_controller')
 
 app.use(express.static(`${__dirname}/../build`));
 
@@ -19,6 +24,10 @@ io.of("/lobby").on("connection", socket => {
   socket.on("get lobby", pin => sockets.getLobby(pin, socket, io));
 
   socket.on("start", () => { io.of('/lobby').emit("start game") });
+
+  socket.on("send message", data =>
+    sendMessage(data, socket,TWILIO_AUTH_TOKEN, TWILIO_SID, MY_PHONE_NUMBER)
+  );
   
 });
 
