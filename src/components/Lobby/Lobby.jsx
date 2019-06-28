@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Axios from "axios";
 import store, { SET_CURRENT_USER } from "../../store";
 import "./Lobby.css";
 import socketIOClient from "socket.io-client";
