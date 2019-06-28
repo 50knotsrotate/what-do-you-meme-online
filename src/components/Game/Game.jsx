@@ -4,7 +4,7 @@ import "./Game.css";
 import axios from "axios";
 import Cards from "../Cards/Cards";
 import socketIOClient from "socket.io-client";
-const socket = socketIOClient("http://localhost:4001/game");
+const socket = socketIOClient("http://134.209.170.80:4001/game");
 
 export default class Game extends Component {
   constructor() {
