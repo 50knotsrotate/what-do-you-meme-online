@@ -8,14 +8,13 @@ export default function Home() {
       <div className="home-main">
         <div>
           <h1>Memes against humanity</h1>
-          <h3>NOTE: This site is currently in development.</h3>
         </div>
         <div className="buttons">
           <Link to="/create">
             <button className="button">Create Game</button>
           </Link>
           <Link to="/join">
-            <button className="button">Join Game</button>
+            <button className = 'button'>Join Game</button>
           </Link>
         </div>
         <h4>

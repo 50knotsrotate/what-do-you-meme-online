@@ -9,16 +9,18 @@
     background-image: url('http://4.bp.blogspot.com/-FNTuZiIGA4U/T8yr57h-FBI/AAAAAAAAAl0/OaXHCA5CfG4/s1600/Worms+3D+Character+-+Worms+3D+Game+wallpaper.jpg');
     background-size: cover;
     background-position: left;
-    font-family: roboto;
+    font-family: monospace;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .home-main {
-    width: 50vw;
+    width: 25vw;
     margin: 0 auto;
     text-align: center;
+    color: white;
+    font-weight: bold;
 }
 
 .buttons {
@@ -26,6 +28,8 @@
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
 
 .button {
@@ -33,4 +37,23 @@
     border-radius: 5px;
     background-color: cyan;
     font-size: 25px;
+}
+
+@media only screen and (max-width: 375px){
+   div h1 {
+        font-size: 2em;
+    }
+
+    .buttons {
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .button {
+        margin-top: 10px;
+    }
+
+    .home-main {
+        width: 85vw;
+    }
 }
