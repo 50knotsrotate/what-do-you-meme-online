@@ -6,7 +6,10 @@
 .home-wrapper {
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 100, 150, .9);
+    background-image: url('http://4.bp.blogspot.com/-FNTuZiIGA4U/T8yr57h-FBI/AAAAAAAAAl0/OaXHCA5CfG4/s1600/Worms+3D+Character+-+Worms+3D+Game+wallpaper.jpg');
+    background-size: cover;
+    background-position: left;
+    font-family: roboto;
     display: flex;
     justify-content: center;
     align-items: center;
