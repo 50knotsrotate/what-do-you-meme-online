@@ -11,4 +11,4 @@
 
 ### How can I play this game?
 #### If you visit www.devDispatch.com, you will be presented with this screen
-<img src="https://www.fujifilm.com/products/digital_cameras/x/fujifilm_x_t1/sample_images/img/index/ff_x_t1_001.JPG" alt="drawing" width="200"/>
+<img src="https://www.fujifilm.com/products/digital_cameras/x/fujifilm_x_t1/sample_images/img/index/ff_x_t1_001.JPG" alt="drawing" width="500px" height = "500px"/>
