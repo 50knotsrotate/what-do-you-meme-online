@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import store, { SET_CURRENT_USER } from "../../store";
 import "./Lobby.css";
 import socketIOClient from "socket.io-client";
 const socket = socketIOClient("/lobby");
@@ -55,7 +54,6 @@ export default class Lobby extends Component {
   };
 
   render() {
-    const game_pin = this.state.pin || "Setting up lobby...";
     const users = this.state.users.map(user => {
       return (
         <div className="user">
