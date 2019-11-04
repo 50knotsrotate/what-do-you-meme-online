@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import store, { SET_CURRENT_USER } from "../../store";
 import "./Lobby.css";
 import socketIOClient from "socket.io-client";
 const socket = socketIOClient("/lobby");
@@ -55,7 +54,6 @@ export default class Lobby extends Component {
   };
 
   render() {
-    const game_pin = this.state.pin || "Setting up lobby...";
     const users = this.state.users.map(user => {
       return (
         <div className="user">
@@ -80,10 +78,7 @@ export default class Lobby extends Component {
               Start
             </button>
           )}
-          <h5 className = 'text'>
-            Are you a potential employer, friend, or just someone out there
-            who wants to play a round?
-          </h5>
+
           <h5 className = 'message-text'>
             Click <span style={{ cursor: 'pointer', textDecoration: 'underline', textAlign: 'center'}} onClick = {this.sendMessage}>here</span> to let me know you wanna play a round.
             I'll get on if I can!
